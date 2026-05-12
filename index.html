@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>When Crime Calls, Does Help Follow? — Group 47</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --crime:    #e94560;
+      --ems:      #1a6b9a;
+      --response: #c8860a;
+      --dark:     #16202a;
+      --mid:      #2d3f50;
+      --text:     #1c1c1c;
+      --muted:    #5a6b7a;
+      --bg:       #ffffff;
+      --bg-light: #f6f8fa;
+      --border:   #d8dfe6;
+      --max:      1100px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Source Sans 3', Georgia, serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      font-size: 1.05rem;
+    }
+
+    /* ── Typography ─────────────────────────── */
+    h1, h2, h3 { font-family: Merriweather, Georgia, serif; line-height: 1.2; }
+
+    h1 { font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 700; color: var(--dark); }
+    h2 { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 700; color: var(--dark); margin-bottom: 0.9rem; }
+    h3 { font-size: 1.15rem; font-weight: 700; color: var(--mid); margin-bottom: 0.5rem; }
+
+    p { margin-bottom: 1.1rem; }
+    p:last-child { margin-bottom: 0; }
+
+    a { color: var(--ems); text-decoration: underline; }
+
+    /* ── Layout ─────────────────────────────── */
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 6%;
+    }
+
+    .section {
+      padding: 72px 6%;
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    .section--full {
+      padding: 72px 6%;
+      background: var(--bg-light);
+    }
+    .section--full .inner {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    .section--dark {
+      background: var(--dark);
+      color: #e8eef4;
+      padding: 72px 6%;
+    }
+    .section--dark .inner { max-width: var(--max); margin: 0 auto; }
+    .section--dark h2 { color: #e8eef4; }
+    .section--dark h3 { color: #a8c0d0; }
+    .section--dark p { color: #c8d8e4; }
+    .section--dark a { color: #6ab8e0; }
+
+    /* ── Hero ───────────────────────────────── */
+    .hero {
+      background: linear-gradient(160deg, #eef4fb 0%, #dde8f5 60%, #f6f8fa 100%);
+      padding: 80px 6% 64px;
+    }
+    .hero .wrap { display: flex; flex-direction: column; gap: 0; }
+
+    .eyebrow {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      color: var(--ems);
+      margin-bottom: 16px;
+    }
+
+    .hero h1 { max-width: 820px; margin-bottom: 22px; }
+
+    .hero .subtitle {
+      font-family: Merriweather, serif;
+      font-size: 1.15rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--mid);
+      max-width: 640px;
+      line-height: 1.65;
+      margin-bottom: 28px;
+    }
+
+    .hero .byline {
+      font-size: 0.85rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      padding-top: 18px;
+      margin-top: 4px;
+    }
+
+    /* ── Stats bar ──────────────────────────── */
+    .stats-bar {
+      background: var(--dark);
+      padding: 0;
+    }
+    .stats-bar .inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 6%;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+    .stat-card {
+      padding: 28px 20px;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      text-align: center;
+    }
+    .stat-card:last-child { border-right: none; }
+    .stat-card .num {
+      display: block;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+    .stat-card .label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #7a9bb5;
+    }
+    .stat-card .num.crime  { color: var(--crime); }
+    .stat-card .num.ems    { color: #5ab4e0; }
+    .stat-card .num.resp   { color: #f5c843; }
+
+    /* ── Chart iframe ───────────────────────── */
+    .chart-frame {
+      width: 100%;
+      border: none;
+      border-radius: 6px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      display: block;
+      margin: 28px 0;
+      background: #fff;
+    }
+
+    .chart-caption {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-style: italic;
+      text-align: center;
+      margin-top: -16px;
+      margin-bottom: 28px;
+    }
+
+    /* ── Two-column layouts ─────────────────── */
+    .cols-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+    .cols-2-wide {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 40px;
+      align-items: start;
+    }
+    .cols-2-wide.flip { grid-template-columns: 2fr 3fr; }
+
+    /* ── Callout box ────────────────────────── */
+    .callout {
+      border-left: 4px solid var(--ems);
+      background: #eef5fb;
+      padding: 20px 24px;
+      border-radius: 0 6px 6px 0;
+      margin: 28px 0;
+    }
+    .callout.crime  { border-color: var(--crime); background: #fdf0f2; }
+    .callout.resp   { border-color: var(--response); background: #fdf6e3; }
+
+    .callout p { font-size: 1.02rem; margin-bottom: 0; }
+    .callout strong { display: block; font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
+
+    /* ── Pull quote ─────────────────────────── */
+    blockquote.pull {
+      border-left: none;
+      padding: 0 0 0 20px;
+      margin: 32px 0;
+      border-left: 3px solid var(--border);
+    }
+    blockquote.pull p {
+      font-family: Merriweather, serif;
+      font-size: 1.25rem;
+      font-style: italic;
+      color: var(--mid);
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    /* ── Section separator ──────────────────── */
+    .rule {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+
+    /* ── Finding cards ──────────────────────── */
+    .findings {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 32px;
+    }
+    .finding-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .finding-card .icon {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      display: block;
+    }
+    .finding-card h3 { font-size: 1rem; color: var(--dark); margin-bottom: 8px; }
+    .finding-card p  { font-size: 0.9rem; color: #555; line-height: 1.55; margin: 0; }
+
+    /* ── Footer ─────────────────────────────── */
+    .footer {
+      background: var(--dark);
+      padding: 40px 6%;
+      color: #7a9bb5;
+      font-size: 0.85rem;
+    }
+    .footer .inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .footer a { color: #6ab8e0; }
+
+    /* ── Responsive ─────────────────────────── */
+    @media (max-width: 768px) {
+      .stats-bar .inner { grid-template-columns: repeat(2, 1fr); }
+      .cols-2, .cols-2-wide, .cols-2-wide.flip { grid-template-columns: 1fr; }
+      .findings { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .stats-bar .inner { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     HERO
+══════════════════════════════════════════ -->
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Group 47 &nbsp;·&nbsp; 02806 Social Data Analysis &amp; Visualization &nbsp;·&nbsp; DTU 2026</p>
+    <h1>When Crime Calls,<br>Does Help Follow?</h1>
+    <p class="subtitle">
+      A data story about violent crime and emergency medical response
+      in San Francisco — and the neighborhoods caught in between.
+    </p>
+    <p class="byline">
+      Starting from <strong>~285,000</strong> Assault and Robbery incidents and
+      <strong>~4.8 million</strong> Medical Incident unit responses in the full datasets &nbsp;·&nbsp;
+      Final analysis window: <strong>2016-2025</strong>
+    </p>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════
+     STATS BAR
+══════════════════════════════════════════ -->
+<div class="stats-bar">
+  <div class="inner">
+    <div class="stat-card">
+      <span class="num crime">110,062</span>
+      <span class="label">Assault and Robbery incidents analysed</span>
+    </div>
+    <div class="stat-card">
+      <span class="num ems">1.83M</span>
+      <span class="label">Medical Incident unit responses analysed</span>
+    </div>
+    <div class="stat-card">
+      <span class="num resp">~7.9 min</span>
+      <span class="label">Mean EMS response time</span>
+    </div>
+    <div class="stat-card">
+      <span class="num">2016-2025</span>
+      <span class="label">Final analysis window</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     INTRODUCTION
+══════════════════════════════════════════ -->
+<section class="section">
+  <div class="cols-2-wide">
+    <div>
+      <h2>Two systems, one city</h2>
+      <p>
+        San Francisco has different emergency and public safety systems working in parallel every day.
+        The Police Department records violent crime, such as assaults and robberies, while the
+        Fire Department responds to medical emergencies across the city.
+      </p>
+      <p>
+        This story asks a simple question: <em>do areas with more violent crime also experience
+        different EMS response times?</em> This matters because crime and medical emergencies are often
+        discussed separately, even though they affect many of the same neighborhoods.
+      </p>
+      <p>
+        We start from open data published by the City and County of San Francisco:
+        <strong>2.8 million crime incident reports</strong> from a merged police dataset and
+        <strong>7.3 million Fire/EMS dispatch records</strong>. From these datasets, we focus on
+        <strong>Assault and Robbery incidents</strong> and <strong>Medical Incident unit responses</strong>,
+        then compare their spatial and temporal patterns.
+      </p>
+      <p>
+        The crime dataset covers 2003-2025 and the Fire/EMS dataset covers
+        2000-2026. In the final analysis and visualizations, we focus on
+        <strong>2016-2025</strong>, since this period worked better for comparing the two datasets
+        in a consistent way.
+      </p>
+      <p>
+        We do not match individual crimes to individual EMS responses. Instead, we compare the two
+        datasets across neighborhoods, time periods, and spatial grid cells.
+      </p>
+      <blockquote class="pull">
+        <p>"Some neighborhoods may face both higher emergency demand and longer response times."</p>
+      </blockquote>
+    </div>
+    <div>
+      <div class="callout crime">
+        <p><strong>110,062</strong> Assault and Robbery incidents from 2016-2025, filtered from the full crime dataset. These are the violent crime types most relevant to our question.</p>
+      </div>
+      <div class="callout">
+        <p><strong>1,833,801</strong> Medical Incident unit responses from 2016-2025, filtered from the full Fire/EMS dataset. Each row represents a dispatched unit response, not necessarily a unique emergency call.</p>
+      </div>
+      <div class="callout resp">
+        <p><strong>Key metric: dispatch-to-on-scene time.</strong> We measure the elapsed minutes from unit dispatch to arrival on scene, focusing on the response and travel part of the process.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- ══════════════════════════════════════════
+     SECTION 1: WHERE VIOLENCE LIVES
+══════════════════════════════════════════ -->
+<section class="section--full">
+  <div class="inner">
+    <h2>Where violence concentrates</h2>
+    <p>
+      The heatmap below shows Assault and Robbery incidents recorded in San Francisco
+      between 2016 and 2025. The pattern is not evenly spread across the city:
+      areas such as the Tenderloin, South of Market, the Mission, and Bayview-Hunters Point
+      stand out as clear hotspots.
+    </p>
+    <p>
+      Scroll the map, zoom in, and explore. The heatmap helps show both the larger
+      city-wide pattern and smaller local concentrations inside high-activity areas.
+    </p>
+    <iframe
+      src="images/violent_crime_heatmap.html"
+      class="chart-frame"
+      height="540"
+      title="Violent crime density heatmap — San Francisco 2016-2025"
+      loading="lazy"
+    ></iframe>
+    <p class="chart-caption">
+      Interactive heatmap · 110,062 Assault and Robbery incidents · 2016-2025
+    </p>
+    <div class="cols-2">
+      <div class="callout crime">
+        <p>
+          <strong>Tenderloin</strong> and <strong>South of Market</strong> stand out as some of the
+          densest areas for Assault and Robbery incidents in the city.
+        </p>
+      </div>
+      <div class="callout crime">
+        <p>
+          <strong>Mission District</strong> and <strong>Bayview-Hunters Point</strong>
+          also appear as important hotspots in the violent crime map.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- ══════════════════════════════════════════
+     SECTION 2: EMS RESPONSE LANDSCAPE
+══════════════════════════════════════════ -->
+<section class="section">
+  <h2>The emergency response landscape</h2>
+  <p>
+    Now we look at where Medical Incident responses are concentrated. The pattern is not
+    identical to the crime map, but some of the same neighborhoods appear again,
+    especially areas with high emergency activity such as the Tenderloin, South of Market,
+    the Mission, and Bayview Hunters Point.
+  </p>
+  <iframe
+    src="images/ems_medical_heatmap.html"
+    class="chart-frame"
+    height="540"
+    title="EMS medical incident density heatmap — San Francisco 2016-2025"
+    loading="lazy"
+  ></iframe>
+  <p class="chart-caption">
+    Interactive heatmap · 1,833,801 Medical Incident unit responses · 2016-2025
+  </p>
+
+  <p>
+    But high response volume does not tell the whole story. What matters for residents
+    is also how quickly help arrives. The chart below ranks San Francisco neighborhoods
+    by mean EMS dispatch-to-on-scene time.
+  </p>
+
+  <iframe
+    src="images/response_time_by_neighborhood.html"
+    class="chart-frame"
+    height="520"
+    title="Mean EMS response time by neighborhood"
+    loading="lazy"
+  ></iframe>
+  <p class="chart-caption">
+    Mean dispatch-to-on-scene time by neighborhood · Medical Incidents ·
+    Color = share of responses using Advanced Life Support (ALS) units ·
+    Hover over a bar to see response count, median response time, and ALS unit share
+  </p>
+
+  <div class="callout resp">
+    <p>
+      The spread between the slowest and fastest neighborhoods is several minutes.
+      Outer or less central areas such as Lakeshore, Visitacion Valley, and Treasure Island
+      show some of the longest average response times, while several central neighborhoods
+      have faster average response times.
+    </p>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- ══════════════════════════════════════════
+     SECTION 3: THE SPATIAL CONNECTION
+══════════════════════════════════════════ -->
+<section class="section--full">
+  <div class="inner">
+    <h2>The spatial link: do crime hotspots wait longer?</h2>
+    <p>
+      The two datasets use different geographic labels — the crime data refers to police
+      districts while the Fire/EMS data uses neighborhood names — so a direct join on place
+      names is not possible. Instead, we divided San Francisco into a grid of
+      <strong>~1 km × 1 km cells</strong> and assigned both datasets to the same cells
+      using latitude and longitude.
+    </p>
+    <p>
+      Each point in the scatter plot below represents one grid cell. The horizontal axis
+      shows how many Assault and Robbery incidents occurred there during the analysis period.
+      The vertical axis shows the mean EMS response time for Medical Incident unit responses
+      in the same cell.
+    </p>
+
+    <iframe
+      src="images/crime_vs_response_scatter.html"
+      class="chart-frame"
+      height="520"
+      title="Crime density vs EMS response time scatter plot"
+      loading="lazy"
+    ></iframe>
+    <p class="chart-caption">
+      Each point is a ~1 km² grid cell · Size = Medical Incident response volume ·
+      Color = ALS unit share · Hover to see crime count, EMS response time, response volume,
+      grid ID, and ALS unit share
+    </p>
+
+    <div class="cols-2-wide">
+      <div>
+        <p>
+          The scatter plot shows a positive relationship: grid cells with more violent crime
+          tend to have longer mean EMS response times. The Pearson correlation is statistically significant, 
+          which suggests that there is a measurable spatial relationship.
+        </p>
+        <p>
+          This does not mean that crime directly causes slower EMS response. It means that
+          higher crime density and longer response times often appear in the same areas.
+          Other factors, such as call volume, traffic, station location, or neighborhood
+          structure, may also influence response time.
+        </p>
+        <p>
+          To explore this further, we also use an OLS regression model in the explainer notebook.
+          The model includes crime density, EMS demand, hour of day, and weekend effects.
+          Even with these controls, crime density remains associated with response time.
+        </p>
+      </div>
+      <div>
+        <div class="callout crime">
+          <p>
+            <strong>Positive correlation</strong>
+            Grid cells with higher violent crime counts tend to show longer mean EMS response
+            times.
+          </p>
+        </div>
+        <div class="callout">
+          <p>
+            <strong>OLS regression</strong>
+            The regression suggests that log crime density is associated with response time,
+            even after including EMS demand, hour of day, and weekend effects.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- ══════════════════════════════════════════
+     SECTION 4: THE CITY'S RHYTHM
+══════════════════════════════════════════ -->
+<section class="section">
+  <h2>The city's rhythm: time also matters</h2>
+  <p>
+    Location is only one part of the story. Violent crime and EMS response time also
+    change throughout the day and across the week. The chart below compares violent crime
+    incidents and mean EMS response time across the 24 hours of the day.
+  </p>
+
+  <iframe
+    src="images/hourly_combined.html"
+    class="chart-frame"
+    height="480"
+    title="Violent crime and EMS response time by hour of day"
+    loading="lazy"
+  ></iframe>
+  <p class="chart-caption">
+    Bars: total violent crime incidents by hour ·
+    Line: mean EMS dispatch-to-on-scene time ·
+    Hover to see exact values
+  </p>
+
+  <div>
+  <p>
+    The two-dimensional heatmap below adds the day-of-week dimension.
+    This is useful because a simple hourly chart can hide differences between
+    weekdays and weekends.
+  </p>
+  <p>
+    The strongest late-night concentrations appear on weekend nights,
+    especially around midnight and the early morning hours. This suggests that
+    time-specific patterns could be important when planning emergency resources.
+  </p>
+</div>
+
+<div class="cols-2" style="margin-top: 28px;">
+  <div class="callout resp">
+    <p>
+      EMS response times are slowest on average around <strong>5:00.</strong>
+      The difference across hours is not huge, but it shows that response time
+      changes throughout the day.
+    </p>
+  </div>
+  <div class="callout crime">
+    <p>
+      In the hourly chart, violent crime reaches its highest total around
+      <strong>16:00.</strong> However, the weekly heatmap below shows that some of
+      the strongest concentrations also appear during late-night weekend hours.
+    </p>
+  </div>
+</div>
+
+  <iframe
+    src="images/crime_hour_heatmap.html"
+    class="chart-frame"
+    height="420"
+    title="Violent crime intensity heatmap — hour of day x day of week"
+    loading="lazy"
+  ></iframe>
+  <p class="chart-caption">
+    Violent crime incidents by hour × day of week ·
+    Darker cells = more incidents · Hover to explore exact values
+  </p>
+</section>
+
+<hr class="rule" />
+
+<!-- ══════════════════════════════════════════
+     SECTION 5: YEARLY TRENDS
+══════════════════════════════════════════ -->
+<section class="section--full">
+  <div class="inner">
+    <h2>Yearly trends: 2016-2025</h2>
+    <p>
+      Looking at the annual trends helps us see how violent crime and EMS response
+      time changed during the analysis period. The two patterns do not move perfectly
+      together, but both show important changes around and after 2020.
+    </p>
+
+    <div>
+      <iframe
+        src="images/crime_yearly_trend.html"
+        class="chart-frame"
+        height="380"
+        title="Violent crime per year 2016-2025"
+        loading="lazy"
+      ></iframe>
+      <p class="chart-caption">Violent crime incidents per year</p>
+
+      <iframe
+        src="images/response_yearly_trend.html"
+        class="chart-frame"
+        height="380"
+        title="Mean EMS response time per year 2016-2025"
+        loading="lazy"
+      ></iframe>
+      <p class="chart-caption">Mean EMS dispatch-to-on-scene time by year</p>
+    </div>
+
+    <div style="margin-top: 8px;">
+      <p>
+        <strong>2020 is an important break in the trend.</strong> City activity changed
+        a lot during the COVID-19 period, and both crime patterns and emergency
+        response conditions were affected. In our data, 2020 has fewer violent crime
+        incidents than the years just before it.
+      </p>
+      <p>
+        From 2021 onwards, mean EMS response time increases and stays higher than it was
+        before 2021. This does not prove that crime changes caused slower response
+        times, but it shows that the post-2020 period is important for understanding
+        the overall pattern.
+      </p>
+    </div>
+
+    <div class="cols-2" style="margin-top: 28px;">
+      <div class="callout">
+        <p>
+          <strong>2020 stands out</strong>
+          The COVID-19 period changed activity across the city, so we use it as an
+          important reference point in the yearly plots.
+        </p>
+      </div>
+      <div class="callout resp">
+        <p>
+          After 2021, mean EMS response time increased and remained above
+          <strong>8.4 minutes</strong> from 2022 onwards.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- ══════════════════════════════════════════
+     SECTION 6: KEY FINDINGS
+══════════════════════════════════════════ -->
+<section class="section--dark">
+  <div class="inner">
+    <h2>Key findings</h2>
+    <p style="color:#c8d8e4; margin-bottom: 36px;">
+      Ten years of data, two emergency systems, one city. Here is what we found.
+    </p>
+    <div class="findings">
+      <div class="finding-card">
+        <span class="icon">📍</span>
+        <h3>Crime and Medical Incident activity overlap spatially</h3>
+        <p>
+          The Tenderloin, South of Market, Mission, and Bayview neighborhoods appear as
+          important areas in both the crime and Medical Incident heatmaps. High crime activity
+          and high emergency demand often appear in the same parts of the city.
+        </p>
+      </div>
+      <div class="finding-card">
+        <span class="icon">⏱️</span>
+        <h3>Crime density is linked to response time</h3>
+        <p>
+          At the grid-cell level (~1 km²), areas with more Assault and Robbery incidents
+          often have longer mean EMS response times. The correlation is statistically
+          significant, but it should not be interpreted as causation.
+        </p>
+      </div>
+      <div class="finding-card">
+        <span class="icon">🌙</span>
+        <h3>Time patterns matter</h3>
+        <p>
+          Violent crime is higher on Fridays, Saturdays, and Sundays, and the heatmap shows
+          strong concentrations during late-night weekend hours. EMS response time also changes
+          during the day and week, although it does not peak at exactly the same times as crime.
+        </p>
+      </div>
+      <div class="finding-card">
+        <span class="icon">📉</span>
+        <h3>2020 changes the pattern</h3>
+        <p>
+          The COVID-19 period marks an important break in the yearly trends. Violent crime
+          fell in 2020, while EMS response times increased after 2021 and remained above their
+          earlier levels from 2022 onwards.
+        </p>
+      </div>
+      <div class="finding-card">
+        <span class="icon">🏥</span>
+        <h3>Response time varies by neighborhood</h3>
+        <p>
+          Some outer or less central neighborhoods, such as Lakeshore, Presidio, Visitacion Valley,
+          and Treasure Island, have some of the longest mean response times. Some central
+          high-demand areas, such as Tenderloin and Mission, are faster on average.
+        </p>
+      </div>
+      <div class="finding-card">
+        <span class="icon">📊</span>
+        <h3>The regression supports the spatial pattern</h3>
+        <p>
+          Our OLS regression on 150,000 sampled unit responses suggests that log crime density
+          is associated with EMS response time, even after including EMS demand, hour of day,
+          and weekend effects.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 7: CONCLUSION
+══════════════════════════════════════════ -->
+<section class="section">
+  <div style="max-width: 720px; margin: 0 auto;">
+    <h2>When crime calls, the answer is not the same everywhere</h2>
+    <p>
+      San Francisco's emergency response system is shaped by the geography and daily rhythm of the city.
+      Our analysis shows that violent crime density and EMS response time are related
+      in space: areas with more Assault and Robbery incidents often also show longer
+      average response times.
+    </p>
+    <p>
+      This does not mean that crime <em>causes</em> slower EMS responses. A more careful
+      interpretation is that crime, emergency demand, geography, and response time are
+      connected in complex ways. Factors such as call volume, traffic, station location,
+      neighborhood layout, and staffing may also play an important role.
+    </p>
+    <p>
+      Still, the results suggest that public safety and emergency medical planning are useful
+      to study together. Some neighborhoods appear repeatedly in both the crime
+      and Medical Incident maps, and response time also changes by place and time of day.
+      These overlaps are important when thinking about how emergency resources are distributed.
+    </p>
+    <blockquote class="pull" style="margin: 32px 0;">
+      <p>
+        The main takeaway is simple: crime patterns and emergency response patterns
+        overlap in important ways, and looking at them together gives a clearer view
+        of urban safety.
+      </p>
+    </blockquote>
+    <p>
+      For the full analytical methodology — preprocessing decisions, regression
+      model specification, and critical discussion — see the
+      <a href="assignmentB_group47.ipynb">explainer notebook (assignmentB_group47.ipynb)</a>.
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="inner">
+    <div>
+      <strong style="color:#c8d8e4;">When Crime Calls, Does Help Follow?</strong><br />
+      Group 47 &nbsp;·&nbsp; 02806 Social Data Analysis &amp; Visualization &nbsp;·&nbsp; DTU Spring 2026
+    </div>
+    <div>
+      <a href="https://data.sfgov.org/Public-Safety/Police-Department-Incident-Reports-Historical-2003/tmnf-yvry">Historical SF Crime Data</a>
+&nbsp;·&nbsp;
+      <a href="https://data.sfgov.org/Public-Safety/Police-Department-Incident-Reports-2018-to-Present/wg3w-h783">Recent SF Crime Data</a>
+&nbsp;·&nbsp;
+      <a href="https://data.sfgov.org/Public-Safety/Fire-Department-and-Emergency-Medical-Services-Dis/nuek-vuh3">SF Fire/EMS Data</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
